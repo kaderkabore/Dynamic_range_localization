@@ -184,8 +184,21 @@ end
  if (abs(mean_cc - mean_dc) < THRESHOLD)
      %%%% ------ TRIGGER FOR RECONFIGURATION  ----  %%%%
      
-
  end
+
+ %% EKF 
+ % Sampling period
+ x_0 = [1 4 0 0]';
+ P_0 = diag([10 10 10 10].^2);
+ T = 0.1;
+
+ f = @(x) Motion(x,T);
+ h = @(x) Measurement(x, pos1,pos2,pos3);
+ [x, P] = EKF_prediction(x_0,P_0,f);
+ [x, P] = EKF_Update(x, P, [dis1,dis2,dis3]', h);
+
+ 
+
 
 
 

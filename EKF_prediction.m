@@ -1,4 +1,4 @@
-function [x, P] = EKF_prediction(x, P, f, Q)
+function [x, P] = EKF_prediction(x, P, f)
     % EKF_prediction calculates mean and covariance of predicted state
     %   density using a non-linear Gaussian model.
     %
@@ -11,7 +11,7 @@ function [x, P] = EKF_prediction(x, P, f, Q)
     %               Returns fx and Fx, motion model and Jacobian evaluated at x
     %               All other model parameters, such as sample time T,
     %               must be included in the function
-    %   Q           [n x n] Process noise covariance
+    %               Q [n x n] Process noise covariance
     %   type        String that specifies the type of non-linear filter
     %
     %Output:
@@ -21,7 +21,7 @@ function [x, P] = EKF_prediction(x, P, f, Q)
     n = size(x,1);
     
     % calculate f(x) and jacobian(f(x),x)
-    [fx, dfx] = f(x);
+    [fx, dfx, Q] = f(x);
     % predict using first order Taylor expansion
     x = fx;
     P = dfx * P * dfx' + Q;
